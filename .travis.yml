@@ -4,4 +4,4 @@ php:
     - 7.1
     - 7.2
     - nightly
-script: phpunit -v --bootstrap tests/autoloader.php tests
+script: ./run_tests.sh 
