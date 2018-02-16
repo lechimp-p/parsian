@@ -1,7 +1,7 @@
 {
     "name": "lechimp-p/parsian",
     "version": "0.1.0",
-    "description": "Parsian helps you to write parsers in PHP.",
+    "description": "Helps you to write parsers in PHP.",
     "keywords": ["parser", "parsing"],
     "type": "library",
     "license": "MIT",

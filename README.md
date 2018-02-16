@@ -4,4 +4,4 @@
 
 # Parsian 
 
-**Parsian helps you to write parsers in PHP.**
+**Helps you to write parsers in PHP.**
