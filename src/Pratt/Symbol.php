@@ -11,11 +11,12 @@
 namespace Lechimp\Parsian\Pratt;
 
 use Lechimp\Parsian\Tokenizer\Regexp;
+use Lechimp\Parsian\Tokenizer\Symbol as TSymbol;
 
 /**
  * A symbol known to the parser.
  */
-class Symbol {
+class Symbol implements TSymbol {
     /**
      * @var Regexp
      */
