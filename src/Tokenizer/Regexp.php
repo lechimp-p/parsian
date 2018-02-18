@@ -22,7 +22,6 @@ class Regexp {
     protected $delim = "%";
 
     public function __construct(string $regexp) {
-        assert('is_string($regexp)');
         if (@preg_match($this->delim.$regexp.$this->delim, "") === false) {
             throw new \InvalidArgumentException("Invalid regexp '$regexp'");
         }
