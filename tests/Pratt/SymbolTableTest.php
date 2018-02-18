@@ -8,7 +8,7 @@
  * a copy of the along with the code.
  */
 
-namespace Lechimp\Parsian\Test\Symbol;
+namespace Lechimp\Parsian\Test\Pratt;
 
 use Lechimp\Parsian\Tokenizer\Regexp;
 use Lechimp\Parsian\Pratt\Symbol;
@@ -54,6 +54,32 @@ class SymbolTableTest extends \PHPUnit\Framework\TestCase {
             $thrown = true;
         }
         $this->assertTrue($thrown);
+    }
+
+    public function test_get_symbol() {
+        $s1 = $this->symbol_table->_add_symbol("foo", 10);
+        $s2 = $this->symbol_table->get_symbol("foo");
+
+        $this->assertEquals($s1, $s2);
+    }
+
+    public function test_get_nonexisting_symbol() {
+        $thrown = false;
+        try {
+            $this->symbol_table->get_symbol("foo");
+            $this->assertFalse("This should not happen.");
+        }
+        catch (\OutOfBoundsException $e) {
+            $thrown = true;
+        }
+        $this->assertTrue($thrown);
+    }
+
+    public function test_get_operator() {
+        $o1 = $this->symbol_table->operator("*");
+        $o2 = $this->symbol_table->get_operator("*");
+
+        $this->assertEquals($o1, $o2);
     }
 
     public function test_symbol() {

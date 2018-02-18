@@ -69,13 +69,31 @@ class SymbolTable implements Symbols {
     }
 
     /**
+     * Get a symbol from the table by regexp.
+     *
+     * @throws  \OutOfBoundsException
+     */
+    public function get_symbol(string $regexp) : Symbol {
+        if (!array_key_exists($regexp, $this->symbols)) {
+            throw new \OutOfBoundsException("Unknown symbol: '$regexp'");
+        }
+        return $this->symbols[$regexp];
+    }
+
+    /**
+     * Get an operator from the table.
+     *
+     * @throws  \OutOfBoundsException
+     */
+    public function get_operator(string $op) : Symbol {
+        return $this->get_symbol($this->operator_regexp($op));
+    }
+
+    /**
      * Add a symbol to the table.
      *
-     * @param   string  $regexp
-     * @param   int     $binding_power
      * @throws  \InvalidArgumentException if %$regexp% is not a regexp
      * @throws  \LogicException if there already is a symbol with that $regexp.
-     * @return  Symbol
      */
     protected function add_symbol(string $regexp, int $binding_power = 0) : Symbol {
         if (array_key_exists($regexp, $this->symbols)) {
