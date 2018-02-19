@@ -8,7 +8,7 @@
  * a copy of the along with the code.
  */
 
-namespace Lechimp\Parsian\Test\Symbol;
+namespace Lechimp\Parsian\Test\Pratt;
 
 use Lechimp\Parsian\Pratt\Symbol;
 use Lechimp\Parsian\Tokenizer\Regexp;
