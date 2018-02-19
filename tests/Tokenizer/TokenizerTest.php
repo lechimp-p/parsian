@@ -31,7 +31,7 @@ class ArrayWrapper implements T\Symbols {
         return $this->pos < count($this->test->symbols);
     }
     public function symbol_for_eof() : T\Symbol {
-        throw new \LogicException("NYI");
+        return $this->test->symbol_for_eof;
     }
 }
 
@@ -42,6 +42,7 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
         $symbols->test = $this;
         $this->tokenizer = new T\Tokenizer($symbols);
         $this->symbol_count = 0;
+        $this->symbol_for_eof = $this->create_symbol("$");
     }
 
     public function create_symbol($regexp) {
@@ -74,7 +75,7 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
     public function test_end_token() {
         $tokens = $this->tokenizer->tokens("");
         $token = $tokens->current();
-        $this->assertEquals(new T\EndToken(1,1), $token);
+        $this->assertEquals(new T\Token($this->symbol_for_eof, [], 1, 1), $token);
     }
 
     public function test_one_token() {
@@ -89,7 +90,7 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
 
         $expected1 = new T\Token($symbol, ["hello"], 1, 1);
         $this->assertEquals($expected1, $token1);
-        $expected2 = new T\EndToken(1,6);
+        $expected2 = new T\Token($this->symbol_for_eof, [], 1,6);
         $this->assertEquals($expected2, $token2);
     }
 
@@ -108,7 +109,7 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals($expected1, $token1);
         $expected2 = new T\Token($symbol, ["world"], 1, 7);
         $this->assertEquals($expected2, $token2);
-        $expected3 = new T\EndToken(1, 12);
+        $expected3 = new T\Token($this->symbol_for_eof, [], 1, 12);
         $this->assertEquals($expected3, $token3);
     }
 
