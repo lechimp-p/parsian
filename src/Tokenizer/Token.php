@@ -19,7 +19,7 @@ class Token {
     /**
      * @var string[]
      */
-    protected $matches;
+    protected $match;
 
     /**
      * @var int
@@ -31,22 +31,38 @@ class Token {
      */
     protected $column;
 
-    public function __construct(Symbol $symbol, array $matches, int $line, int $column) {
+    public function __construct(Symbol $symbol, array $match, int $line, int $column) {
         $this->symbol = $symbol;
-        $this->matches = $matches;
+        $this->match = $match;
         $this->line = $line;
         $this->column = $column;
     } 
 
     /**
-     * Get the line the token was found.
+     * Get the symbol of the token.
+     */
+    public function symbol() : Symbol {
+        return $this->symbol;
+    }
+
+    /**
+     * Get the match of the token.
+     *
+     * @return  string[] 
+     */
+    public function match() : array {
+        return $this->match;
+    }
+
+    /**
+     * Get the line the token was found in.
      */
     public function line() : int {
         return $this->line;
     }
 
     /**
-     * Get the column the token was found.
+     * Get the column the token was found in.
      */
     public function column() : int {
         return $this->column;
