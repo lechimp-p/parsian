@@ -154,7 +154,7 @@ class Tokens implements \Iterator {
             }
         }
 
-        throw new Exception($this->unparsed);
+        throw new Exception($this->unparsed, $this->line, $this->column);
     }
 
 

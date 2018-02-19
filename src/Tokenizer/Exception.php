@@ -18,10 +18,22 @@ class Exception extends \Exception {
      */
     protected $unmatched_text;
 
-    public function __construct(string $unmatched_text) {
+    /**
+     * @var int
+     */
+    protected $line;
+
+    /**
+     * @var int
+     */
+    protected $column;
+
+    public function __construct(string $unmatched_text, int $line, int $column) {
         $preview = substr($unmatched_text, 0, self::UNPARSED_PREVIEW);
         parent::__construct("Could not match '$preview'");
         $this->unmatched_text = $unmatched_text;
+        $this->line = $line;
+        $this->column = $column;
     }
 
     /**
@@ -29,5 +41,19 @@ class Exception extends \Exception {
      */
     public function unmatched_text() : string {
         return $this->unmatched_text;
+    }
+
+    /**
+     * Get the line where unmatched text starts.
+     */
+    public function line() : int {
+        return $this->line;
+    }
+
+    /**
+     * Get the column where unmatched text starts.
+     */
+    public function column() : int {
+        return $this->column;
     }
 } 
