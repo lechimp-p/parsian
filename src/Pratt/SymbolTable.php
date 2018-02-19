@@ -129,6 +129,15 @@ class SymbolTable implements Symbols {
         return new Regexp($regexp);
     }
 
+    // Symbols implementation
+
+    /**
+     * The symbol to be used for the end token.
+     */
+    public function symbol_for_eof() : TSymbol {
+        return $this->build_symbol("$", -1);
+    }
+
     // Iterator implementation 
 
     /**

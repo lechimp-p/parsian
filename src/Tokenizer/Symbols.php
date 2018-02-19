@@ -15,7 +15,14 @@ namespace Lechimp\Parsian\Tokenizer;
  */
 interface Symbols extends \Iterator {
     /**
-     * This needs to return Symbols.
+     * This needs to return the symbols.
      */
     public function current() : Symbol;
+
+    /**
+     * The symbol to be used for the end token.
+     *
+     * This does not have to be returned by the iterator-interface.
+     */
+    public function symbol_for_eof() : Symbol;
 }

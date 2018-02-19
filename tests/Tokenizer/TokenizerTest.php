@@ -15,7 +15,7 @@ use Lechimp\Parsian\Tokenizer as T;
 class ArrayWrapper implements T\Symbols {
     public $test;
     public $pos = 0;
-    public function current() : T\Symbol{
+    public function current() : T\Symbol {
         return $this->test->symbols[$this->pos];
     }
     public function key() : int {
@@ -29,6 +29,9 @@ class ArrayWrapper implements T\Symbols {
     }
     public function valid() : bool {
         return $this->pos < count($this->test->symbols);
+    }
+    public function symbol_for_eof() : T\Symbol {
+        throw new \LogicException("NYI");
     }
 }
 

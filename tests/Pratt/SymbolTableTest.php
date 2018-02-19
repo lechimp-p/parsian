@@ -130,4 +130,10 @@ class SymbolTableTest extends \PHPUnit\Framework\TestCase {
         $ret = $this->symbol_table_mock->literal($regexp, $converter);           
         $this->assertEquals($symbol_mock, $ret);
     }
+
+    public function test_symbol_for_eof() {
+        $s = $this->symbol_table->symbol_for_eof();
+        $expected = new Symbol(new Regexp("$"), -1);
+        $this->assertEquals($expected, $s);
+    }
 }
