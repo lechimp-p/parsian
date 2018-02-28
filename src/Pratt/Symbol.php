@@ -67,7 +67,7 @@ class Symbol implements TSymbol {
      * @return  self
      */
     public function null_denotation_is(\Closure $led) : Symbol {
-        assert('$this->null_denotation === null');
+        assert($this->null_denotation === null);
         $this->null_denotation = $led;
         return $this;
     }
@@ -86,7 +86,7 @@ class Symbol implements TSymbol {
      * @return  self
      */
     public function left_denotation_is(\Closure $led) : Symbol {
-        assert('$this->left_denotation === null');
+        assert($this->left_denotation === null);
         $this->left_denotation = $led;
         return $this;
     }

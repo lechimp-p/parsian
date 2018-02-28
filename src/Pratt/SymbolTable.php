@@ -113,7 +113,7 @@ class SymbolTable implements Symbols {
      * @return  string
      */
     protected function operator_regexp(string $op) : string {
-        assert('is_string($op)');
+        assert(is_string($op));
         $regexp = array();
         foreach (str_split($op, 1) as $c) {
             $regexp[] = "[$c]";
