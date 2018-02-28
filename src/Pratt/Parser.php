@@ -64,7 +64,7 @@ abstract class Parser {
             throw new \LogicException("Could not match empty string...");
         }
         $e = $this->expression(0);
-        if ($this->current_symbol() != $this->symbol_table->symbol_for_eof()) {
+        if ($this->has_current_token()) {
             throw new \LogicException("Could not match complete string...");
         }
         return $e;
@@ -78,13 +78,13 @@ abstract class Parser {
     protected function expression(int $right_binding_power) {
         $s = $this->current_symbol();
         $m = $this->current_match();
-        $this->fetch_next_token();
+        $this->next_token();
         $left = $s->null_denotation($m);
 
-        while ($right_binding_power < $this->current_symbol()->binding_power()) {
+        while ($this->has_current_token() && $right_binding_power < $this->current_symbol()->binding_power()) {
             $s = $this->current_symbol();
             $m = $this->current_match();
-            $this->fetch_next_token();
+            $this->next_token();
             $left = $s->left_denotation($left, $m);
         }
 
@@ -121,8 +121,17 @@ abstract class Parser {
      * 
      * @return void
      */
-    protected function fetch_next_token() {
+    protected function next_token() {
         $this->tokens->next();
+    }
+
+    /**
+     * Check if current token is valid.
+     *
+     * @return bool
+     */
+    protected function has_current_token() {
+        return $this->tokens->valid();
     }
 
     /**
@@ -153,17 +162,7 @@ abstract class Parser {
             throw new \LogicException(
                 "Syntax Error: Expected '{$symbol->regexp()->raw()}', found '$match'");
         }
-        $this->tokens->next();
-        $this->token = $this->tokens->current();
-    }
-
-    /**
-     * Is the end of the file reached?
-     *
-     * @return  bool
-     */
-    public function is_end_of_file_reached() : bool {
-        return $this->tokens->current() instanceof T\EndToken;
+        $this->next_token();
     }
 
     /**
