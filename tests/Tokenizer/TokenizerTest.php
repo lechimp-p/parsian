@@ -61,10 +61,10 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
             $tokens->current();
             $this->assertTrue("This should not happen.");
         }
-        catch (T\Exception $e) {
+        catch (T\NoMatchException $e) {
             $thrown = $e;
         }
-        $this->assertInstanceOf(T\Exception::class, $thrown);
+        $this->assertInstanceOf(T\NoMatchException::class, $thrown);
         $this->assertEquals($e->unmatched_text(), "some source.");
     }
 
@@ -74,7 +74,7 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
         try {
             $token = $tokens->current();
         }
-        catch (\RuntimeException $e) {
+        catch (T\EOFReachedException $e) {
             $thrown = true;
         }
         $this->assertTrue($thrown);
@@ -118,10 +118,10 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
             $tokens->current();
             $this->assertTrue("This should not happen.");
         }
-        catch (T\Exception $e) {
+        catch (T\NoMatchException $e) {
             $thrown = $e;
         }
-        $this->assertInstanceOf(T\Exception::class, $thrown);
+        $this->assertInstanceOf(T\NoMatchException::class, $thrown);
         $this->assertEquals($e->unmatched_text(), "hello world");
     }
 
@@ -175,7 +175,7 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
             $tokens->current();
             $this->assertTrue("This should not happen.");
         }
-        catch (T\Exception $e) {
+        catch (T\NoMatchException $e) {
             $this->assertTrue(true);
         }
     }

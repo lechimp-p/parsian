@@ -70,6 +70,9 @@ class Tokens implements \Iterator {
      */
     public function current() : Token {
         $this->maybe_parse_next_token();
+        if (count($this->tokens) <= $this->position) {
+            throw new EOFReachedException("No more tokens here.");
+        }
         return $this->tokens[$this->position];
     }
 
@@ -107,7 +110,7 @@ class Tokens implements \Iterator {
      * Try to parse the next token if there are currently not enough tokens
      * in the tokens-array to get a token for the current position.
      *
-     * @throws  Exception if next token can not be parsed.
+     * @throws  NoMatchException if next token can not be parsed.
      */
     protected function maybe_parse_next_token() {
         if (count($this->tokens) <= $this->position) {
@@ -118,7 +121,7 @@ class Tokens implements \Iterator {
     /**
      * Try to parse the next token from the source.
      *
-     * @throws  Exception if next token can not be parsed.
+     * @throws  NoMatchException if next token can not be parsed.
      */
     protected function parse_next_token() {
         if ($this->is_everything_parsed()) {
@@ -139,7 +142,7 @@ class Tokens implements \Iterator {
             }
         }
 
-        throw new Exception($this->unparsed, $this->line, $this->column);
+        throw new NoMatchException($this->unparsed, $this->line, $this->column);
     }
 
 

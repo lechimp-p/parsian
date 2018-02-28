@@ -10,5 +10,5 @@
 
 namespace Lechimp\Parsian\Tokenizer;
 
-class Exception extends \Exception {
+class EOFReachedException extends Exception {
 } 
