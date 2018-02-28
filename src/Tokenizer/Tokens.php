@@ -54,11 +54,6 @@ class Tokens implements \Iterator {
      */
     protected $column;
 
-    /**
-     * @var bool
-     */
-    protected $is_end_token_added;
-
     public function __construct(Symbols $symbols, string $source) {
         $this->symbols = $symbols;
         $this->position = 0;
@@ -68,7 +63,6 @@ class Tokens implements \Iterator {
         $this->parsing_position = 0;
         $this->line = 1;
         $this->column = 1;
-        $this->is_end_token_added = false;
     }
 
     /**
@@ -128,15 +122,6 @@ class Tokens implements \Iterator {
      */
     protected function parse_next_token() {
         if ($this->is_everything_parsed()) {
-            if (!$this->is_end_token_added()) {
-                $this->tokens[] = new Token
-                    ( $this->symbols->symbol_for_eof()
-                    , []
-                    , $this->line
-                    , $this->column
-                    );
-                $this->is_end_token_added = true;
-            }
             return;
         }
 
@@ -188,15 +173,5 @@ class Tokens implements \Iterator {
      */
     protected function is_everything_parsed() {
         return empty($this->unparsed);
-    }
-
-
-    /**
-     * Check if end token is added.
-     *
-     * @return  bool
-     */
-    protected function is_end_token_added() {
-        return $this->is_end_token_added;
     }
 }

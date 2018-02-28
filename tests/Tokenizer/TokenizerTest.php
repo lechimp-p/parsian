@@ -30,9 +30,6 @@ class ArrayWrapper implements T\Symbols {
     public function valid() : bool {
         return $this->pos < count($this->test->symbols);
     }
-    public function symbol_for_eof() : T\Symbol {
-        return $this->test->symbol_for_eof;
-    }
 }
 
 class TokenizerTest extends \PHPUnit\Framework\TestCase {
@@ -42,7 +39,6 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
         $symbols->test = $this;
         $this->tokenizer = new T\Tokenizer($symbols);
         $this->symbol_count = 0;
-        $this->symbol_for_eof = $this->create_symbol("$");
     }
 
     public function create_symbol($regexp) {
@@ -72,10 +68,16 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals($e->unmatched_text(), "some source.");
     }
 
-    public function test_end_token() {
+    public function test_eof() {
         $tokens = $this->tokenizer->tokens("");
-        $token = $tokens->current();
-        $this->assertEquals(new T\Token($this->symbol_for_eof, [], 1, 1), $token);
+        $thrown = false;
+        try {
+            $token = $tokens->current();
+        }
+        catch (\RuntimeException $e) {
+            $thrown = true;
+        }
+        $this->assertTrue($thrown);
     }
 
     public function test_one_token() {
@@ -85,13 +87,9 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
         $tokens = $this->tokenizer->tokens("hello");
         $token1 = $tokens->current();
         $tokens->next();
-        $token2 = $tokens->current();
-        $tokens->next();
 
         $expected1 = new T\Token($symbol, ["hello"], 1, 1);
         $this->assertEquals($expected1, $token1);
-        $expected2 = new T\Token($this->symbol_for_eof, [], 1,6);
-        $this->assertEquals($expected2, $token2);
     }
 
     public function test_two_tokens() {
@@ -102,15 +100,11 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
         $token1 = $tokens->current();
         $tokens->next();
         $token2 = $tokens->current();
-        $tokens->next();
-        $token3 = $tokens->current();
 
         $expected1 = new T\Token($symbol, ["hello"], 1, 1);
         $this->assertEquals($expected1, $token1);
         $expected2 = new T\Token($symbol, ["world"], 1, 7);
         $this->assertEquals($expected2, $token2);
-        $expected3 = new T\Token($this->symbol_for_eof, [], 1, 12);
-        $this->assertEquals($expected3, $token3);
     }
 
     public function test_syntax_error2() {
@@ -165,8 +159,6 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
         $this->symbols[] = $symbol;
 
         $tokens = $this->tokenizer->tokens("hello world");
-        $this->assertTrue($tokens->valid());
-        $tokens->next();
         $this->assertTrue($tokens->valid());
         $tokens->next();
         $this->assertTrue($tokens->valid());
@@ -244,10 +236,9 @@ class TokenizerTest extends \PHPUnit\Framework\TestCase {
 
         $tokens = $this->tokenizer->tokens("a   b");
         $tokens->next();
-        $tokens->next();
         $token = $tokens->current();
 
         $this->assertEquals(1, $token->line());
-        $this->assertEquals(6, $token->column());
+        $this->assertEquals(5, $token->column());
     }
 }
